@@ -28,14 +28,14 @@ Builds of the latest code:
 ### Linux/OSX
 
 ```sh
-export DATABASE_URL=postgresql://username:password@host/dbname
+export PGTILESERV_DBCONNECTION=postgresql://username:password@host/dbname
 ./pg_tileserv
 ```
 
 ### Windows
 
 ```
-SET DATABASE_URL=postgresql://username:password@host/dbname
+SET PGTILESERV_DBCONNECTION=postgresql://username:password@host/dbname
 pg_tileserv.exe
 ```
 
@@ -92,6 +92,12 @@ DefaultMaxZoom = 22
 CORSOrigins = *
 # Output extra logging information?
 Debug = false
+```
+
+All configuration parameters can also be set using the environment variables. This can be done by using the prefix PGTILESERV_ and the setting name in uppercase. When a config file is supplied and an ENV variable is set the ENV will overwrite the value in the config file.
+```
+PGTILESERV_DEBUG=true
+PGTILESERV_HTTPPORT=5000
 ```
 
 # Operation

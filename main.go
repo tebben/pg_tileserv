@@ -68,6 +68,9 @@ func init() {
 	viper.SetDefault("DbPoolMaxConns", 4)
 	viper.SetDefault("DbTimeout", 10)
 	viper.SetDefault("CORSOrigins", "*")
+
+	viper.SetEnvPrefix("PGTILESERV")
+	viper.AutomaticEnv()
 }
 
 func main() {
@@ -108,15 +111,6 @@ func main() {
 	log.Infof("%s %s", programName, programVersion)
 	log.Info("Run with --help parameter for commandline options")
 
-	// Read environment configuration first
-	if dbUrl := os.Getenv("DATABASE_URL"); dbUrl != "" {
-		viper.Set("DbConnection", dbUrl)
-		log.Info("Using database connection info from environment variable DATABASE_URL")
-	}
-
-	log.Infof("Serving HTTP  at %s:%d", viper.GetString("HttpHost"), viper.GetInt("HttpPort"))
-	log.Infof("Serving HTTPS at %s:%d", viper.GetString("HttpHost"), viper.GetInt("HttpsPort"))
-
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			log.Debugf("viper.ConfigFileNotFoundError: %s", err)
@@ -136,6 +130,9 @@ func main() {
 			log.Info("Config file: none found, using defaults")
 		}
 	}
+
+	log.Infof("Serving HTTP  at %s:%d", viper.GetString("HttpHost"), viper.GetInt("HttpPort"))
+	log.Infof("Serving HTTPS at %s:%d", viper.GetString("HttpHost"), viper.GetInt("HttpsPort"))
 
 	// Load the global layer list right away
 	// Also connects to database
